@@ -1,6 +1,33 @@
 {
-  "name": "@modular/api",
+  "name": "@modular-cms/api",
   "version": "1.0.1",
+  "description": "Modular CMS API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lukseh/modular-api.git"
+  },
+  "keywords": [
+    "cms",
+    "api",
+    "modular",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lukseh/modular-api/issues"
+  },
+  "homepage": "https://github.com/Lukseh/modular-api#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "packageManager": "yarn@4.9.1",
   "dependencies": {
     "express": "^5.1.0"
@@ -8,11 +35,16 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "yarn build",
+    "postbuild": "echo 'Build completed successfully'",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
+    "nodemon": "^3.0.2",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },

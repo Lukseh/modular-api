@@ -1,0 +1,57 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty for current package.json version)'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for npm provenance
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          
+      - name: Enable Corepack
+        run: corepack enable
+        
+      - name: Install dependencies
+        run: yarn install --immutable
+        
+      - name: Build package
+        run: yarn build
+        
+      - name: Run tests (if available)
+        run: |
+          if yarn run --silent test --help >/dev/null 2>&1; then
+            yarn test
+          else
+            echo "No test script found, skipping tests"
+          fi
+        continue-on-error: false
+        
+      - name: Update version (if specified)
+        if: github.event.inputs.version != ''
+        run: |
+          yarn version ${{ github.event.inputs.version }} --no-git-tag-version
+          
+      - name: Publish to NPM
+        run: yarn npm publish --access public --provenance
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
