@@ -1,69 +1,3 @@
-<<<<<<< HEAD
-# @modular-cms/api
-
-Modular CMS API - A flexible and extensible content management system API built with TypeScript and Express.
-
-## Installation
-
-```bash
-npm install @modular-cms/api
-# or
-yarn add @modular-cms/api
-```
-
-## Usage
-
-```typescript
-import { /* your exports */ } from '@modular-cms/api';
-
-// Example usage
-```
-
-## Features
-
-- Built with TypeScript for type safety
-- Express.js based for performance and flexibility
-- Modular architecture for easy extension
-- ESM support
-
-## Development
-
-### Prerequisites
-
-- Node.js 20 or higher
-- Yarn (recommended) or npm
-
-### Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/Lukseh/modular-api.git
-cd modular-api
-
-# Install dependencies
-yarn install
-
-# Start development server
-yarn dev
-
-# Build for production
-yarn build
-
-# Start production server
-yarn start
-```
-
-## Scripts
-
-- `yarn dev` - Start development server with hot reload
-- `yarn build` - Build the project for production
-- `yarn start` - Start production server
-- `yarn clean` - Clean build artifacts
-
-## Documentation
-
-For detailed documentation, check out the [ModulaR API documentation](https://github.com/Lukseh/modular-api).
-=======
 # ModulaR API Package
 
 This package provides a comprehensive API for connecting Node.js applications as modules to the ModulaR CMS system. It enables seamless communication, module registration, health monitoring, and data exchange between the CMS and module apps.
@@ -489,7 +423,6 @@ Common HTTP status codes:
 - `400`: Bad Request (validation errors)
 - `404`: Not Found (module not found)
 - `500`: Internal Server Error
->>>>>>> ef44a0965a2550e457c0242251fcc760ade2ffbc
 
 ## Contributing
 
