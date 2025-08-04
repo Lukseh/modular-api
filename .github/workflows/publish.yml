@@ -39,6 +39,19 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
         
+      - name: Configure Yarn for npm registry
+        run: |
+          yarn config set npmRegistryServer "https://registry.npmjs.org"
+          yarn config set npmAlwaysAuth false
+          echo "Yarn configuration:"
+          yarn config get npmRegistryServer
+          yarn config get npmAlwaysAuth
+          
+          # Create .npmrc for public package access
+          echo "registry=https://registry.npmjs.org/" > .npmrc
+          echo "//registry.npmjs.org/:_authToken=" >> .npmrc
+          echo "Created .npmrc for public access"
+        
       - name: Cache Yarn dependencies
         uses: actions/cache@v4
         with:
@@ -84,7 +97,10 @@ jobs:
           yarn version ${{ github.event.inputs.version }} --no-git-tag-version
           
       - name: Publish to NPM
-        run: yarn npm publish --access public --provenance
+        run: |
+          # Configure authentication for publishing
+          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+          yarn npm publish --access public --provenance
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
