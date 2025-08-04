@@ -12,6 +12,43 @@ This package provides a comprehensive API for connecting Node.js applications as
 - **Retry Logic**: Built-in retry mechanisms for reliable communication
 - **Future Ready**: Prepared for @modular/RobusT integration for enhanced security
 
+## Installation
+
+```bash
+# Install the package
+yarn add @modular-cms/api
+
+# For development
+yarn add -D @modular-cms/api
+```
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js 20 or higher
+- Yarn 4.9.1 (managed by Corepack)
+
+### Initial Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Lukseh/modular-api.git
+cd modular-api
+
+# Enable Corepack (if not already enabled)
+corepack enable
+
+# Install dependencies
+yarn install
+
+# Build the project
+yarn build
+
+# Start development server
+yarn dev
+```
+
 ## API Endpoints
 
 ### Module Management
@@ -277,7 +314,7 @@ interface ModularApiResponse {
 
 ```typescript
 import express from 'express';
-import { createModularClient } from '@modular/api';
+import { createModularClient } from '@modular-cms/api';
 
 const app = express();
 const port = 3001;
@@ -337,9 +374,9 @@ process.on('SIGINT', async () => {
 });
 ```
 
-## Future Integration: @modular/RobusT
+## Future Integration: @modular-cms/RobusT
 
-This API is designed to integrate seamlessly with the upcoming `@modular/RobusT` package, which will provide:
+This API is designed to integrate seamlessly with the upcoming `@modular-cms/RobusT` package, which will provide:
 
 - **robust.protect**: Endpoint protection with multiple security layers
 - **robust.publish**: Secure data publishing with encryption
@@ -375,10 +412,16 @@ const secureResponse = await robust.GetJson('/api/secure-endpoint', {
 
 ```bash
 # Start the ModulaR API server
-npm run start
+yarn start
 
 # Development mode with auto-restart
-npm run dev
+yarn dev
+
+# Build the project
+yarn build
+
+# Clean build artifacts
+yarn clean
 ```
 
 ### Testing Module Registration
@@ -427,11 +470,13 @@ Common HTTP status codes:
 ## Contributing
 
 1. Fork the repository
-<<<<<<< HEAD
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Install dependencies: `yarn install`
+4. Make your changes
+5. Build and test: `yarn build`
+6. Commit your changes (`git commit -m 'Add some amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
 
 ## License
 
@@ -440,13 +485,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 If you encounter any issues or have questions, please file an issue on the [GitHub repository](https://github.com/Lukseh/modular-api/issues).
-=======
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details.
->>>>>>> ef44a0965a2550e457c0242251fcc760ade2ffbc

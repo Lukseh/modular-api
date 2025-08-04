@@ -30,11 +30,25 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
         
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+        
       - name: Install dependencies
         run: |
           if [ -f "yarn.lock" ]; then
+            echo "Using existing yarn.lock with immutable install"
             yarn install --immutable
           else
+            echo "No yarn.lock found, creating one with regular install"
             yarn install
           fi
         

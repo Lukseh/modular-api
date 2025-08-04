@@ -38,7 +38,9 @@
     "start": "node dist/index.js",
     "prepublishOnly": "yarn build",
     "postbuild": "echo 'Build completed successfully'",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prepare": "yarn build",
+    "prepack": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
