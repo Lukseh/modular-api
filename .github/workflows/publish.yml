@@ -21,6 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Check repository state
+        run: |
+          echo "📁 Repository contents:"
+          ls -la
+          echo "🔍 Looking for yarn.lock:"
+          ls -la yarn.lock 2>/dev/null || echo "⚠️  yarn.lock not found in repository"
+          echo "📄 Package.json exists:"
+          ls -la package.json
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -44,12 +53,17 @@ jobs:
         
       - name: Install dependencies
         run: |
-          if [ -f "yarn.lock" ]; then
-            echo "Using existing yarn.lock with immutable install"
+          echo "Checking for yarn.lock file..."
+          ls -la yarn.lock || echo "yarn.lock not found"
+          
+          if test -f "yarn.lock"; then
+            echo "✅ yarn.lock exists - using immutable install"
             yarn install --immutable
           else
-            echo "No yarn.lock found, creating one with regular install"
+            echo "❌ yarn.lock not found - running regular install to create lockfile"
             yarn install
+            echo "✅ yarn.lock created"
+            ls -la yarn.lock
           fi
         
       - name: Build package

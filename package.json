@@ -40,7 +40,8 @@
     "postbuild": "echo 'Build completed successfully'",
     "clean": "rimraf dist",
     "prepare": "yarn build",
-    "prepack": "yarn clean && yarn build"
+    "prepack": "yarn clean && yarn build",
+    "setup": "node -e \"console.log('Run setup.bat on Windows or setup.sh on Unix systems')\""
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

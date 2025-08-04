@@ -36,10 +36,17 @@ yarn add -D @modular-cms/api
 git clone https://github.com/Lukseh/modular-api.git
 cd modular-api
 
+# Option 1: Use setup script (recommended)
+# On Windows:
+setup.bat
+# On Unix/Linux/macOS:
+chmod +x setup.sh && ./setup.sh
+
+# Option 2: Manual setup
 # Enable Corepack (if not already enabled)
 corepack enable
 
-# Install dependencies
+# Install dependencies (this will create yarn.lock if it doesn't exist)
 yarn install
 
 # Build the project
@@ -48,6 +55,8 @@ yarn build
 # Start development server
 yarn dev
 ```
+
+**Note**: If you encounter the `--immutable` error, it means yarn.lock doesn't exist yet. Simply run `yarn install` once to create it, then commit the file to your repository.
 
 ## API Endpoints
 

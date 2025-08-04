@@ -1,0 +1,56 @@
+name: Generate Yarn Lock (One-time Setup)
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate yarn.lock even if it exists'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  generate-lockfile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Enable Corepack
+        run: corepack enable
+        
+      - name: Check for existing yarn.lock
+        id: check-lock
+        run: |
+          if [ -f "yarn.lock" ] && [ "${{ github.event.inputs.force }}" != "true" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ yarn.lock already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "📝 yarn.lock will be generated"
+          fi
+        
+      - name: Generate yarn.lock
+        if: steps.check-lock.outputs.exists == 'false'
+        run: |
+          echo "🔄 Installing dependencies to generate yarn.lock..."
+          yarn install
+          echo "✅ yarn.lock generated successfully"
+          ls -la yarn.lock
+        
+      - name: Commit yarn.lock
+        if: steps.check-lock.outputs.exists == 'false'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add yarn.lock
+          git commit -m "chore: add yarn.lock file for reproducible builds" || echo "No changes to commit"
+          git push
