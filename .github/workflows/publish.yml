@@ -70,8 +70,16 @@ jobs:
           ls -la yarn.lock || echo "yarn.lock not found"
           
           if test -f "yarn.lock"; then
-            echo "✅ yarn.lock exists - using immutable install"
-            yarn install --immutable
+            echo "✅ yarn.lock exists - attempting immutable install"
+            if yarn install --immutable; then
+              echo "✅ Immutable install successful"
+            else
+              echo "❌ Immutable install failed - yarn.lock is out of sync"
+              echo "🔄 Regenerating yarn.lock to match package.json"
+              rm yarn.lock
+              yarn install
+              echo "✅ yarn.lock regenerated successfully"
+            fi
           else
             echo "❌ yarn.lock not found - running regular install to create lockfile"
             yarn install
