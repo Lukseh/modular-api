@@ -1,0 +1,88 @@
+{
+  "name": "@modular/api",
+  "version": "1.0.0",
+  "description": "API package for connecting Node.js apps as modules to ModulaR CMS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "modular-api": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "yarn build && node dist/server.js",
+    "watch": "tsc --watch",
+    "example": "yarn build && node dist/examples/exampleModule.js",
+    "cms-example": "yarn build && node dist/examples/cms-example.js",
+    "test": "yarn build && node dist/test-api.js",
+    "demo": "yarn build && node dist/demo-imports.js",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "yarn build",
+    "postinstall": "echo '📦 @modular/api installed! Use: import * as ModularAPI from \"@modular/api\"'"
+  },
+  "keywords": [
+    "modular",
+    "cms",
+    "api",
+    "nodejs",
+    "typescript",
+    "module",
+    "communication",
+    "microservices"
+  ],
+  "author": "ModulaR Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/modular/api"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "express": "^4.18.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/services/modularClient.js",
+      "require": "./dist/services/modularClient.js",
+      "types": "./dist/services/modularClient.d.ts"
+    },
+    "./cms": {
+      "import": "./dist/cms-integration.js",
+      "require": "./dist/cms-integration.js",
+      "types": "./dist/cms-integration.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/modular.js",
+      "require": "./dist/types/modular.js",
+      "types": "./dist/types/modular.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "require": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@modular/api",
+  "version": "1.0.1",
+  "packageManager": "yarn@4.9.1",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  }
+}
