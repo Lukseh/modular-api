@@ -31,7 +31,12 @@ jobs:
         run: corepack enable
         
       - name: Install dependencies
-        run: yarn install --immutable
+        run: |
+          if [ -f "yarn.lock" ]; then
+            yarn install --immutable
+          else
+            yarn install
+          fi
         
       - name: Build package
         run: yarn build
