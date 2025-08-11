@@ -2,11 +2,12 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "lib": ["ES2020"],
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./src-elysia",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
@@ -14,14 +15,16 @@
     "declarationMap": true,
     "sourceMap": true,
     "removeComments": false,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "types": ["bun-types"]
   },
   "include": [
-    "src/**/*"
+    "src-elysia/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
+    "src",
     "**/*.test.ts",
     "**/*.spec.ts"
   ]

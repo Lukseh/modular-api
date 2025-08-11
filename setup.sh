@@ -1,35 +1,22 @@
 #!/bin/bash
 
-# Setup script for first-time development setup
-echo "🚀 Setting up ModulaR API development environment..."
+echo "🚀 Setting up ModulaR API development environment with Bun..."
 
-# Check if Corepack is enabled
-if ! command -v corepack &> /dev/null; then
-    echo "❌ Corepack not found. Please install Node.js 16+ and enable corepack:"
-    echo "   npm install -g corepack && corepack enable"
+# Check if Bun is installed
+if ! command -v bun &> /dev/null; then
+    echo "❌ Bun not found. Please install Bun: https://bun.sh/docs/installation"
     exit 1
 fi
 
-# Enable corepack
-echo "📦 Enabling Corepack..."
-corepack enable
-
 # Install dependencies
-echo "📥 Installing dependencies..."
-if [ -f "yarn.lock" ]; then
-    echo "✅ yarn.lock exists - using immutable install"
-    yarn install --immutable
-else
-    echo "🔄 No yarn.lock found - creating one"
-    yarn install
-    echo "✅ yarn.lock created successfully"
-fi
+echo "📥 Installing dependencies with Bun..."
+bun install
 
 # Build the project
-echo "🔨 Building project..."
-yarn build
+echo "🔨 Building project with Bun..."
+bun run build
 
 echo "✅ Setup complete! You can now run:"
-echo "   yarn dev    - Start development server"
-echo "   yarn build  - Build the project"
-echo "   yarn start  - Start production server"
+echo "   bun run dev    - Start development server"
+echo "   bun run build  - Build the project"
+echo "   bun run start  - Start production server"

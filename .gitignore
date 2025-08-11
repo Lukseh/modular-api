@@ -9,6 +9,11 @@ dist/
 build/
 out/
 
+
+.vs/
+.yarn/
+setup.sh
+
 # Runtime data
 pids
 *.pid

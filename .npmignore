@@ -1,7 +1,15 @@
-# Source files
+# Source files - EXCLUDE FROM PUBLISHED PACKAGE
 src/
+src-elysia/
 *.ts
 !dist/**/*.d.ts
+
+# Testing files - EXCLUDE FROM PUBLISHED PACKAGE
+dist/TESTING/
+TESTING/
+dist/**/TESTING/
+benchmark.js
+benchmark-results.md
 
 # Development files
 .github/
@@ -31,6 +39,10 @@ package-lock.json
 .yarn/
 .pnp.*
 
+# Development scripts
+src/quick-start.js
+src/test-api.js
+
 # Logs
 logs/
 *.log
@@ -47,6 +59,7 @@ pids/
 # Temporary folders
 tmp/
 temp/
+temp-*/
 
 # Editor directories and files
 .idea/
@@ -62,3 +75,13 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Documentation that should stay in repo but not in package
+src/USAGE.md
+src/README.md
+
+# Keep these in published package:
+# README.md (root)
+# LICENSE
+# CHANGELOG.md
+# dist/ (compiled code only)

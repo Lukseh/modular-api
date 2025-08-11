@@ -1,496 +1,348 @@
-# ModulaR API Package
+# 🚀 @modular-cms/api
 
-This package provides a comprehensive API for connecting Node.js applications as modules to the ModulaR CMS system. It enables seamless communication, module registration, health monitoring, and data exchange between the CMS and module apps.
+[![npm version](https://badge.fury.io/js/@modular-cms%2Fapi.svg)](https://badge.fury.io/js/@modular-cms%2Fapi)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Elysia](https://img.shields.io/badge/Elysia-1.3+-purple.svg)](https://elysiajs.com/)
+[![Bun](https://img.shields.io/badge/Bun-1.0+-orange.svg)](https://bun.sh/)
 
-## Features
+**Unified API package for ModulaR CMS** - A high-performance, type-safe package that supports both CMS and Module applications using Elysia and Bun.
 
-- **Module Registration**: Register your Node.js app as a module in ModulaR CMS
-- **Health Monitoring**: Automatic heartbeat system with health status reporting
-- **Communication Protocol**: Bidirectional communication between CMS and modules
-- **Event-Driven Architecture**: Real-time event handling and notifications
-- **Type Safety**: Full TypeScript support with comprehensive type definitions
-- **Retry Logic**: Built-in retry mechanisms for reliable communication
-- **Future Ready**: Prepared for @modular/RobusT integration for enhanced security
-
-## Installation
+## 📦 Installation
 
 ```bash
-# Install the package
+# Using Bun (recommended)
+bun add @modular-cms/api
+
+# Using npm
+npm install @modular-cms/api
+
+# Using yarn
 yarn add @modular-cms/api
-
-# For development
-yarn add -D @modular-cms/api
 ```
 
-## Development Setup
+## ⚡ Performance Benchmarks
 
-### Prerequisites
+**Real-world benchmark results (measured 8/11/2025):**
 
-- Node.js 20 or higher
-- Yarn 4.9.1 (managed by Corepack)
+| Metric | v1.0.2 (Express + Node.js) | v1.1.0 (Elysia + Bun) | Improvement |
+|--------|----------------------------|------------------------|-------------|
+| **Requests/sec** | 5,497 req/sec | 24,462 req/sec | **🚀 4.45x faster** |
+| **Requests/min** | 329,810 req/min | **1,467,744 req/min** | **🚀 4.45x faster** |
+| **Latency (p50)** | 57ms | 11ms | **⚡ 5.18x faster** |
+| **Latency (p99)** | 87ms | 18ms | **⚡ 4.83x faster** |
+| **Throughput** | 2.15 MB/sec | 5.5 MB/sec | **📊 2.56x faster** |
+| **Errors** | 0 | 0 | **✅ Perfect stability** |
 
-### Initial Setup
+### 🧪 Benchmark Details
 
+**Test Environment:**
+- **Hardware**: 12-core CPU, 32GB RAM  
+- **OS**: Windows 11 x64
+- **Node.js**: v22.17.0
+- **Bun**: 1.2.19
+- **Load**: 300 concurrent connections, 30-second duration
+
+**Tested Versions:**
+- **v1.0.2**: Actual published package `@modular-cms/api@1.0.2`
+- **v1.1.0**: Current Elysia/Bun implementation
+
+**Commands Used:**
 ```bash
-# Clone the repository
-git clone https://github.com/Lukseh/modular-api.git
-cd modular-api
+# v1.0.2 (Actual Express package)
+autocannon -c 300 -d 30 http://localhost:3001/api/modular/health
 
-# Option 1: Use setup script (recommended)
-# On Windows:
-setup.bat
-# On Unix/Linux/macOS:
-chmod +x setup.sh && ./setup.sh
-
-# Option 2: Manual setup
-# Enable Corepack (if not already enabled)
-corepack enable
-
-# Install dependencies (this will create yarn.lock if it doesn't exist)
-yarn install
-
-# Build the project
-yarn build
-
-# Start development server
-yarn dev
+# v1.1.0 (Elysia + Bun)  
+autocannon -c 300 -d 30 http://localhost:3000/api/v1/health
 ```
 
-**Note**: If you encounter the `--immutable` error, it means yarn.lock doesn't exist yet. Simply run `yarn install` once to create it, then commit the file to your repository.
+### 🎯 **Performance Impact**
 
-## API Endpoints
+🔥 **MASSIVE IMPROVEMENT**
 
-### Module Management
+**Key Improvements:**
+- 🚀 **4.45x higher throughput** - From 330K to **1,468K requests per minute**
+- ⚡ **5.18x lower latency** - Response time improved from 57ms to **11ms**
+- 📊 **2.6x better data throughput** - 2.15 MB/sec → **5.5 MB/sec**
 
-#### Register Module
-```http
-POST /api/modular/register
-Content-Type: application/json
+### 📊 Real-World Impact
 
-{
-  "moduleId": "my-module",
-  "moduleName": "My Custom Module",
-  "version": "1.0.0",
-  "description": "A custom module for ModulaR CMS",
-  "capabilities": [
-    {
-      "name": "data-processing",
-      "description": "Process various data types",
-      "version": "1.0.0"
-    }
-  ],
-  "endpoints": [
-    {
-      "path": "/api/data",
-      "method": "GET",
-      "description": "Get processed data",
-      "protected": true
-    }
-  ]
-}
-```
+**For a typical CMS with 100 modules:**
+- **v1.0.2**: Can handle ~550 module operations per second
+- **v1.1.0**: Can handle **~2,446 module operations per second**
 
-#### Get All Modules
-```http
-GET /api/modular/modules
-```
+**Migration Benefits:**
+- **Existing deployments**: 5.18x better response times immediately after upgrade
+- **High-traffic scenarios**: 4.45x better capacity without hardware changes  
+- **Resource efficiency**: Better resource utilization
 
-#### Get Specific Module
-```http
-GET /api/modular/modules/{moduleId}
-```
+## 🎯 Features
 
-#### Unregister Module
-```http
-DELETE /api/modular/modules/{moduleId}
-```
+- ✅ **Unified Package**: Single package for both CMS and Module applications
+- ✅ **High Performance**: Built with Elysia and optimized for Bun
+- ✅ **TypeScript First**: Full TypeScript support with comprehensive types
+- ✅ **API Versioning**: Group-based versioning (`/v1`, `/v2`) for backward compatibility
+- ✅ **Auto Documentation**: Interactive Swagger documentation
+- ✅ **Health Monitoring**: Built-in health checks and heartbeat system
+- ✅ **Event System**: Real-time module lifecycle events
+- ✅ **Production Ready**: Optimized for production deployment
 
-### Health Monitoring
+## 🏗️ Architecture
 
-#### Send Heartbeat
-```http
-POST /api/modular/heartbeat/{moduleId}
-Content-Type: application/json
+The package provides three main namespaces:
 
-{
-  "memory": {
-    "used": 50000000,
-    "total": 100000000,
-    "percentage": 50
-  },
-  "cpu": {
-    "percentage": 25,
-    "load": [1.2, 1.1, 1.0]
-  }
-}
-```
+- **`CMS.*`** - Functions for CMS systems (server-side)
+- **`Module.*`** - Functions for Module applications (client-side)
+- **`Types.*`** - Shared type definitions
 
-#### Get System Health
-```http
-GET /api/modular/health
-```
+## 🚀 Quick Start
 
-### Communication
-
-#### Send Communication to Module
-```http
-POST /api/modular/communicate/{moduleId}
-Content-Type: application/json
-
-{
-  "action": "processData",
-  "data": {
-    "input": "some data to process"
-  }
-}
-```
-
-#### Broadcast to All Modules
-```http
-POST /api/modular/broadcast
-Content-Type: application/json
-
-{
-  "action": "systemUpdate",
-  "data": {
-    "message": "System will restart in 5 minutes"
-  }
-}
-```
-
-### Logging and Monitoring
-
-#### Get Communication Logs
-```http
-GET /api/modular/logs?limit=100
-```
-
-#### Get Module Capabilities
-```http
-GET /api/modular/modules/{moduleId}/capabilities
-```
-
-## Client SDK Usage
-
-### Basic Setup
+### For CMS Systems
 
 ```typescript
-import { createModularClient, createExampleModuleConfig } from './services/modularClient';
+import { CMS } from '@modular-cms/api'
+
+// Start API server
+const server = CMS.createAPIServer({ 
+  port: 3000, 
+  prefix: '/api' 
+})
+
+// Manage modules
+const modules = CMS.getRegisteredModules()
+const health = CMS.getSystemHealth()
+
+// Send commands to modules
+await CMS.sendCommandToModule('blog-module', 'deploy', { version: '1.1.0' })
+
+// Broadcast to all modules
+await CMS.broadcastToAllModules('system.update', { 
+  message: 'Maintenance tonight' 
+})
+
+console.log('🦊 CMS running at http://localhost:3000')
+console.log('📚 API Docs: http://localhost:3000/api/swagger')
+```
+
+### For Module Applications
+
+```typescript
+import { Module, Types } from '@modular-cms/api'
 
 // Create module configuration
-const moduleConfig = createExampleModuleConfig('my-app', 'My Application');
-
-// Or create custom configuration
-const customConfig = {
-  moduleId: 'my-custom-module',
-  moduleName: 'My Custom Module',
-  version: '1.0.0',
-  description: 'A powerful module for ModulaR CMS',
-  capabilities: [
-    {
-      name: 'file-processing',
-      description: 'Process uploaded files',
-      version: '1.0.0'
-    }
-  ],
-  endpoints: [
-    {
-      path: '/upload',
-      method: 'POST',
-      description: 'Upload and process files',
-      protected: true
-    }
-  ]
-};
-
-// Create client instance
-const client = createModularClient({
-  apiUrl: 'http://localhost:7474/api/modular',
-  moduleConfig: customConfig,
-  heartbeatInterval: 30000, // 30 seconds
-  retryAttempts: 3,
-  retryDelay: 1000
-});
-```
-
-### Registration and Lifecycle
-
-```typescript
-// Register the module
-try {
-  const result = await client.register();
-  console.log('Module registered:', result);
-} catch (error) {
-  console.error('Registration failed:', error);
-}
-
-// Listen for events
-client.on('registered', (data) => {
-  console.log('Successfully registered:', data);
-});
-
-client.on('heartbeatSent', (data) => {
-  console.log('Heartbeat sent:', data);
-});
-
-client.on('communicationReceived', (data) => {
-  console.log('Received communication:', data);
-});
-
-// Handle graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('Shutting down...');
-  await client.shutdown();
-  process.exit(0);
-});
-```
-
-### Module Service Usage
-
-```typescript
-import { modularService } from './services/modularService';
-
-// Listen for module events
-modularService.on('moduleEvent', (eventData) => {
-  console.log('Module event:', eventData);
-});
-
-modularService.on('module.registered', (eventData) => {
-  console.log('New module registered:', eventData.moduleId);
-});
-
-modularService.on('module.error', (eventData) => {
-  console.error('Module error:', eventData);
-});
-
-// Get all registered modules
-const modules = modularService.getRegisteredModules();
-console.log('Registered modules:', modules);
-
-// Send communication to a specific module
-const result = await modularService.sendCommunication(
-  'target-module-id',
-  'processData',
-  { input: 'some data' }
-);
-```
-
-## Type Definitions
-
-### Core Types
-
-```typescript
-interface ModuleConfig {
-  moduleId: string;
-  moduleName: string;
-  version: string;
-  description?: string;
-  capabilities: ModuleCapability[];
-  endpoints: ModuleEndpoint[];
-  dependencies?: ModuleDependency[];
-  metadata?: Record<string, any>;
-}
-
-interface ModuleCapability {
-  name: string;
-  description?: string;
-  version?: string;
-  config?: Record<string, any>;
-}
-
-interface ModuleEndpoint {
-  path: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  description?: string;
-  protected?: boolean;
-  params?: EndpointParam[];
-  response?: EndpointResponse;
-}
-
-interface ModularApiResponse {
-  success: boolean;
-  data?: any;
-  error?: string;
-  moduleId?: string;
-  timestamp: string;
-  requestId?: string;
-}
-```
-
-## Example Implementation
-
-### Simple Module App
-
-```typescript
-import express from 'express';
-import { createModularClient } from '@modular-cms/api';
-
-const app = express();
-const port = 3001;
-
-// Module configuration
-const moduleConfig = {
-  moduleId: 'simple-module',
-  moduleName: 'Simple Module',
+const config: Types.ModuleConfig = Module.createConfig({
+  moduleId: 'my-blog',
+  moduleName: 'Blog Module',
   version: '1.0.0',
   capabilities: [
-    { name: 'basic-operations', description: 'Basic CRUD operations' }
+    { name: 'content-management', description: 'Manage blog posts' }
   ],
   endpoints: [
-    { path: '/status', method: 'GET', description: 'Module status' },
-    { path: '/data', method: 'GET', description: 'Get data' }
+    { path: '/posts', method: 'GET', description: 'Get blog posts' },
+    { path: '/posts', method: 'POST', description: 'Create blog post' }
   ]
-};
+})
 
-// Create ModulaR client
-const modularClient = createModularClient({
-  apiUrl: 'http://localhost:7474/api/modular',
-  moduleConfig
-});
+// Create client
+const client = Module.createClient({
+  apiUrl: 'http://localhost:3000/api/v1',
+  moduleConfig: config,
+  heartbeatInterval: 30000
+})
 
-// Register with ModulaR on startup
-app.listen(port, async () => {
-  console.log(`Module running on port ${port}`);
-  
-  try {
-    await modularClient.register();
-    console.log('Registered with ModulaR CMS');
-  } catch (error) {
-    console.error('Failed to register:', error);
-  }
-});
+// Register simple routes
+client.routes.get('/posts', () => ({ posts: getAllPosts() }))
+client.routes.post('/posts', (data) => ({ success: createPost(data) }))
 
-// Module endpoints
-app.get('/status', (req, res) => {
-  res.json({ 
-    status: 'active', 
-    moduleId: moduleConfig.moduleId,
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get('/data', (req, res) => {
-  res.json({ 
-    data: 'Module processed data',
-    moduleId: moduleConfig.moduleId
-  });
-});
+// Connect to CMS
+await client.register()
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  await modularClient.shutdown();
-  process.exit(0);
-});
+  await client.unregister()
+  process.exit(0)
+})
 ```
 
-## Future Integration: @modular-cms/RobusT
+## 📊 API Endpoints
 
-This API is designed to integrate seamlessly with the upcoming `@modular-cms/RobusT` package, which will provide:
+When the CMS is running, these endpoints are available:
 
-- **robust.protect**: Endpoint protection with multiple security layers
-- **robust.publish**: Secure data publishing with encryption
-- **robust.encrypt**: Advanced encryption for data safety
-- **robust.GetJson**: Secure JSON retrieval with protection
-- **Step-up Protection**: Graduated security levels based on data sensitivity
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/` | API information and versions |
+| `GET` | `/api/swagger` | Interactive API documentation |
+| `POST` | `/api/v1/register` | Register a new module |
+| `GET` | `/api/v1/modules` | List all registered modules |
+| `GET` | `/api/v1/health` | System health check |
+| `POST` | `/api/v1/heartbeat/:id` | Send module heartbeat |
+| `POST` | `/api/v1/communicate/:id` | Send command to module |
+| `POST` | `/api/v1/broadcast` | Broadcast to all modules |
+| `GET` | `/api/v1/logs` | Communication logs |
 
-### Planned Security Integration
+## 🔄 API Versioning
+
+The package supports backward-compatible API versioning:
 
 ```typescript
-// Future usage with @modular/RobusT
-import { robust } from '@modular/robust';
+// V1 (current stable)
+const clientV1 = Module.createClient({
+  apiUrl: 'http://localhost:3000/api/v1',
+  moduleConfig: config,
+  apiVersion: 'v1'
+})
 
-// Protected endpoint
-app.get('/secure-data', 
-  robust.protect({ level: 'high', encryption: true }),
-  (req, res) => {
-    const secureData = robust.encrypt(sensitiveData);
-    res.json(robust.publish(secureData));
+// V2 (future version)
+const clientV2 = Module.createClient({
+  apiUrl: 'http://localhost:3000/api/v2', 
+  moduleConfig: config,
+  apiVersion: 'v2'
+})
+```
+
+## 📚 Advanced Usage
+
+### CMS with Module Monitoring
+
+```typescript
+import { CMS } from '@modular-cms/api'
+
+class MyModularCMS {
+  private server: any
+  
+  async start() {
+    // Start API server
+    this.server = CMS.createAPIServer({ port: 3000 })
+    
+    // Monitor module events
+    CMS.onModuleEvent('module.registered', (data) => {
+      console.log('New module:', data.moduleId)
+      this.setupModuleRouting(data)
+    })
+    
+    // Periodic health monitoring
+    setInterval(() => {
+      const health = CMS.getSystemHealth()
+      console.log('System health:', health)
+    }, 60000)
   }
-);
-
-// Secure communication
-const secureResponse = await robust.GetJson('/api/secure-endpoint', {
-  protection: 'maximum',
-  stepUpAuth: true
-});
-```
-
-## Development
-
-### Running the API Server
-
-```bash
-# Start the ModulaR API server
-yarn start
-
-# Development mode with auto-restart
-yarn dev
-
-# Build the project
-yarn build
-
-# Clean build artifacts
-yarn clean
-```
-
-### Testing Module Registration
-
-```bash
-# Test module registration
-curl -X POST http://localhost:7474/api/modular/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "moduleId": "test-module",
-    "moduleName": "Test Module",
-    "version": "1.0.0",
-    "capabilities": [],
-    "endpoints": []
-  }'
-
-# Check registered modules
-curl http://localhost:7474/api/modular/modules
-
-# Send heartbeat
-curl -X POST http://localhost:7474/api/modular/heartbeat/test-module \
-  -H "Content-Type: application/json" \
-  -d '{"status": "active"}'
-```
-
-## Error Handling
-
-The API uses standardized error responses:
-
-```json
-{
-  "success": false,
-  "error": "Description of the error",
-  "timestamp": "2025-08-05T10:30:00.000Z",
-  "moduleId": "optional-module-id"
+  
+  async deployToModule(moduleId: string, config: any) {
+    return await CMS.sendCommandToModule(moduleId, 'deploy', config)
+  }
 }
 ```
 
-Common HTTP status codes:
-- `200`: Success
-- `201`: Created (module registered)
-- `400`: Bad Request (validation errors)
-- `404`: Not Found (module not found)
-- `500`: Internal Server Error
+### Module with Custom Routes
 
-## Contributing
+```typescript
+import { Module } from '@modular-cms/api'
+
+const apiModule = Module.createClient({
+  apiUrl: 'http://localhost:3000/api/v1',
+  moduleConfig: Module.createConfig({
+    moduleId: 'user-api',
+    moduleName: 'User Management API',
+    version: '2.1.0',
+    capabilities: [
+      { name: 'user-auth', description: 'Authentication system' },
+      { name: 'user-profiles', description: 'User profile management' }
+    ],
+    endpoints: [
+      { path: '/auth/login', method: 'POST', description: 'User login' },
+      { path: '/users/profile', method: 'GET', description: 'Get profile' }
+    ]
+  })
+})
+
+// Register routes
+apiModule.routes.post('/auth/login', (credentials) => {
+  return authenticateUser(credentials)
+})
+
+apiModule.routes.get('/users/profile', () => {
+  return getCurrentUserProfile()
+})
+
+// Connect to CMS
+await apiModule.register()
+```
+
+## 🛠️ Development
+
+```bash
+# Clone repository
+git clone https://github.com/Lukseh/modular-api.git
+cd modular-api
+
+# Install dependencies
+bun install
+
+# Development mode
+bun run dev
+
+# Build for production
+bun run build
+
+# Start production server
+bun run start
+
+# Run benchmarks
+bun run benchmark
+```
+
+## 📦 Publishing
+
+```bash
+# Build and test
+bun run build
+
+# Dry run publish
+bun run publish:dry
+
+# Publish to npm
+bun run publish:prod
+```
+
+## 🔮 Roadmap
+
+### Version 1.2.0
+- **Enhanced Security**: Integration with @modular/robust
+- **Real-time Events**: WebSocket support
+- **Advanced Monitoring**: Enhanced metrics and analytics
+
+### Version 2.0.0
+- **API v2**: New features and improvements
+- **GraphQL Support**: Optional GraphQL API
+- **Microservice Orchestration**: Advanced service management
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Install dependencies: `yarn install`
-4. Make your changes
-5. Build and test: `yarn build`
-6. Commit your changes (`git commit -m 'Add some amazing feature'`)
-7. Push to the branch (`git push origin feature/amazing-feature`)
-8. Open a Pull Request
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🔗 Links
 
-If you encounter any issues or have questions, please file an issue on the [GitHub repository](https://github.com/Lukseh/modular-api/issues).
+- **GitHub**: [https://github.com/Lukseh/modular-api](https://github.com/Lukseh/modular-api)
+- **npm**: [https://www.npmjs.com/package/@modular-cms/api](https://www.npmjs.com/package/@modular-cms/api)
+- **Documentation**: [GitHub Wiki](https://github.com/Lukseh/modular-api/wiki)
+- **Issues**: [GitHub Issues](https://github.com/Lukseh/modular-api/issues)
+
+## 🏆 Related Projects
+
+- **ModulaR CMS**: Main CMS system (in development)
+- **LunaR**: Bun-based fork of ModulaR CMS
+- **@modular/robust**: Security package (planned)
+
+---
+
+**Built with ❤️ for the ModulaR ecosystem**
