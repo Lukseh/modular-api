@@ -1,0 +1,173 @@
+name: Publish to NPM (Bun)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty for current package.json version)'
+        required: false
+        type: string
+      environment:
+        description: 'Deployment environment'
+        required: false
+        type: choice
+        options:
+          - production
+          - staging
+        default: production
+
+env:
+  BUN_VERSION: '1.2.19'
+
+jobs:
+  validate:
+    name: 🔍 Validate Package
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.package-info.outputs.version }}
+      name: ${{ steps.package-info.outputs.name }}
+    
+    steps:
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: ⚡ Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+          
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+        
+      - name: 🔨 Build package
+        run: bun run build
+        
+      - name: 🧪 Run tests (if available)
+        run: |
+          if bun run test --help >/dev/null 2>&1; then
+            bun run test
+          else
+            echo "ℹ️ No test script found, skipping tests"
+          fi
+        continue-on-error: false
+        
+      - name: 📋 Validate package
+        run: bun run publish:dry
+        
+      - name: 📊 Run benchmarks (if available)
+        run: |
+          if [ -f "benchmark.js" ]; then
+            echo "🏃 Running performance benchmarks..."
+            timeout 300s bun run benchmark || echo "⚠️ Benchmark timeout or error (non-critical)"
+          else
+            echo "ℹ️ No benchmark script found, skipping benchmarks"
+          fi
+        continue-on-error: true
+        
+      - name: 📝 Extract package info
+        id: package-info
+        run: |
+          VERSION=$(bun -p "require('./package.json').version")
+          NAME=$(bun -p "require('./package.json').name")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "📦 Package: $NAME@$VERSION"
+
+  publish:
+    name: 🚀 Publish Package
+    runs-on: ubuntu-latest
+    needs: validate
+    permissions:
+      contents: read
+      id-token: write # Required for npm provenance
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: 🔄 Checkout code
+        uses: actions/checkout@v4
+        
+      - name: ⚡ Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+          
+      - name: 🔧 Setup Node.js (for npm publishing)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+        
+      - name: 🔨 Build package
+        run: bun run build
+        
+      - name: 🏷️ Update version (if specified)
+        if: github.event.inputs.version != ''
+        run: |
+          bun -p "
+            const pkg = require('./package.json');
+            pkg.version = '${{ github.event.inputs.version }}';
+            require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+          echo "✅ Updated version to ${{ github.event.inputs.version }}"
+          
+      - name: 🔍 Verify package contents
+        run: |
+          echo "📋 Final package validation:"
+          bun run publish:check
+          echo ""
+          echo "📄 Package.json version:"
+          bun -p "require('./package.json').version"
+          echo ""
+          echo "📁 Build output:"
+          ls -la dist/
+          
+      - name: 🌍 Publish to NPM
+        run: |
+          echo "🚀 Publishing ${{ needs.validate.outputs.name }}@${{ needs.validate.outputs.version }} to NPM..."
+          npm publish --access public --provenance
+          echo "✅ Successfully published to NPM!"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: 📢 Post-publish validation
+        run: |
+          echo "🕐 Waiting for package to be available on NPM..."
+          sleep 30
+          
+          echo "🔍 Verifying published package:"
+          npm view ${{ needs.validate.outputs.name }}@${{ needs.validate.outputs.version }} --json | bun -p "
+            const data = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+            console.log('✅ Package successfully published:');
+            console.log('   Name:', data.name);
+            console.log('   Version:', data.version);
+            console.log('   Description:', data.description);
+            console.log('   Published:', new Date(data.time[data.version]).toISOString());
+          " || echo "⚠️ Package verification failed (may take time to propagate)"
+
+  notify:
+    name: 📢 Notify Success
+    runs-on: ubuntu-latest
+    needs: [validate, publish]
+    if: success()
+    
+    steps:
+      - name: 🎉 Success notification
+        run: |
+          echo "🎉 Successfully published ${{ needs.validate.outputs.name }}@${{ needs.validate.outputs.version }}!"
+          echo ""
+          echo "📦 Package details:"
+          echo "   Name: ${{ needs.validate.outputs.name }}"
+          echo "   Version: ${{ needs.validate.outputs.version }}"
+          echo "   Environment: ${{ github.event.inputs.environment || 'production' }}"
+          echo "   Registry: https://registry.npmjs.org"
+          echo ""
+          echo "📥 Install command:"
+          echo "   bun add ${{ needs.validate.outputs.name }}"
+          echo "   npm install ${{ needs.validate.outputs.name }}"
+          echo ""
+          echo "🔗 NPM Package: https://www.npmjs.com/package/${{ needs.validate.outputs.name }}"

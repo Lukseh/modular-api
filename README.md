@@ -5,6 +5,8 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Elysia](https://img.shields.io/badge/Elysia-1.3+-purple.svg)](https://elysiajs.com/)
 [![Bun](https://img.shields.io/badge/Bun-1.0+-orange.svg)](https://bun.sh/)
+[![CI](https://github.com/Lukseh/modular-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Lukseh/modular-api/actions/workflows/ci.yml)
+[![Publish](https://github.com/Lukseh/modular-api/actions/workflows/publish.yml/badge.svg)](https://github.com/Lukseh/modular-api/actions/workflows/publish.yml)
 
 **Unified API package for ModulaR CMS** - A high-performance, type-safe package that supports both CMS and Module applications using Elysia and Bun.
 
@@ -293,56 +295,56 @@ bun run benchmark
 
 ## 📦 Publishing
 
+The package is published automatically via GitHub Actions when a new release is created.
+
+### 🚀 **Automated Publishing Workflow**
+
+**Production Publishing:**
+1. Create a new release on GitHub
+2. GitHub Actions automatically builds and publishes to NPM
+3. Package is available within minutes
+
+**Manual Publishing:**
 ```bash
-# Build and test
-bun run build
+# Local validation (dry run only)
+bun run publish:validate
 
-# Dry run publish
-bun run publish:dry
+# Check package contents
+bun run publish:check
 
-# Publish to npm
-bun run publish:prod
+# Manual workflow trigger (GitHub Actions)
+# Go to Actions tab → "🚀 Publish ModulaR API" → Run workflow
 ```
 
-## 🔮 Roadmap
+**Workflow Features:**
+- ✅ **Automatic validation** - Build, test, and package validation
+- ✅ **Performance benchmarks** - Automated performance testing
+- ✅ **Security checks** - Dependency auditing
+- ✅ **Multi-environment** - Production and staging support
+- ✅ **Dry run support** - Test publishing without releasing
+- ✅ **Provenance** - NPM package provenance for security
+- ✅ **Compatibility testing** - Multiple Node.js and Bun versions
 
-### Version 1.2.0
-- **Enhanced Security**: Integration with @modular/robust
-- **Real-time Events**: WebSocket support
-- **Advanced Monitoring**: Enhanced metrics and analytics
+### 🔧 **Development Workflows**
 
-### Version 2.0.0
-- **API v2**: New features and improvements
-- **GraphQL Support**: Optional GraphQL API
-- **Microservice Orchestration**: Advanced service management
+**Continuous Integration:**
+- Runs on every push and PR
+- Tests multiple Node.js/Bun version combinations
+- Security audits and dependency checks
+- Performance regression testing
 
-## 🤝 Contributing
+**Scripts Available:**
+```bash
+# Building
+bun run clean          # Clean dist folder
+bun run build          # Build TypeScript
+bun run postbuild      # Post-build tasks
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+# Validation
+bun run publish:dry    # NPM dry run
+bun run publish:check  # Check package contents
+bun run publish:validate # Complete validation pipeline
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Links
-
-- **GitHub**: [https://github.com/Lukseh/modular-api](https://github.com/Lukseh/modular-api)
-- **npm**: [https://www.npmjs.com/package/@modular-cms/api](https://www.npmjs.com/package/@modular-cms/api)
-- **Documentation**: [GitHub Wiki](https://github.com/Lukseh/modular-api/wiki)
-- **Issues**: [GitHub Issues](https://github.com/Lukseh/modular-api/issues)
-
-## 🏆 Related Projects
-
-- **ModulaR CMS**: Main CMS system (in development)
-- **LunaR**: Bun-based fork of ModulaR CMS
-- **@modular/robust**: Security package (planned)
-
----
-
-**Built with ❤️ for the ModulaR ecosystem**
+# Testing & Benchmarks
+bun run test           # Run tests (if available)
+bun run benchmark      # Performance benchmarks
