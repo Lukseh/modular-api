@@ -36,7 +36,7 @@
     "url": "https://github.com/Lukseh/modular-api/issues"
   },
   "homepage": "https://github.com/Lukseh/modular-api#readme",
-  "packageManager": "bun@latest",
+  "packageManager": "bun@1.0.0>",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
