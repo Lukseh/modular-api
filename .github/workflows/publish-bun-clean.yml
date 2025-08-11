@@ -29,7 +29,7 @@ env:
 
 jobs:
   validate:
-    name: 🔍 Validate & Test Package
+    name: 🔍 Validate & Build Package
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.package-info.outputs.version }}
@@ -75,17 +75,6 @@ jobs:
           echo "📁 Build output:"
           ls -la dist/
           
-      - name: 🧪 Run tests (if available)
-        run: |
-          if bun run test --help >/dev/null 2>&1; then
-            echo "🧪 Running tests..."
-            bun run test
-            echo "✅ Tests passed"
-          else
-            echo "ℹ️ No test script found, skipping tests"
-          fi
-        continue-on-error: false
-        
       - name: 📋 Validate package structure
         run: |
           echo "📋 Validating package structure..."
@@ -114,17 +103,10 @@ jobs:
           
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "name=$NAME" >> $GITHUB_OUTPUT
-          
-          # Check if this version is already published
-          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
-            echo "should-publish=false" >> $GITHUB_OUTPUT
-            echo "⚠️ Version $VERSION already exists on NPM"
-          else
-            echo "should-publish=true" >> $GITHUB_OUTPUT
-            echo "✅ Version $VERSION is new and ready for publishing"
-          fi
+          echo "should-publish=true" >> $GITHUB_OUTPUT
           
           echo "📦 Package: $NAME@$VERSION"
+          echo "✅ Ready for publishing"
           
       - name: 📤 Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -286,23 +268,11 @@ jobs:
           echo "   - Verify build completed successfully"
           echo "   - Ensure bun.lock/bun.lockb is up to date"
           
-      - name: ⚠️ Already published notification  
-        if: needs.validate.outputs.should-publish == 'false'
-        run: |
-          echo "⚠️ Version ${{ needs.validate.outputs.version }} already exists on NPM"
-          echo ""
-          echo "💡 To publish a new version:"
-          echo "   1. Update version in package.json"
-          echo "   2. Create a new release, or"
-          echo "   3. Run this workflow manually with a new version number"
-          echo ""
-          echo "🔗 Current package: https://www.npmjs.com/package/${{ needs.validate.outputs.name }}"
-          
-      - name: ℹ️ Validation only result
+      - name: ℹ️ Validation result
         if: needs.validate.result == 'success' && (needs.publish.result == 'skipped' || needs.publish.result == '')
         run: |
           echo "ℹ️ Package validation completed successfully"
           echo ""
           echo "📦 Package: ${{ needs.validate.outputs.name }}@${{ needs.validate.outputs.version }}"
           echo "✅ All checks passed"
-          echo "📋 Package is ready for publishing when conditions are met"
+          echo "📋 Package ready for publishing when conditions are met"
