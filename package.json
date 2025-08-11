@@ -64,7 +64,9 @@
     "benchmark": "node benchmark.js",
     "publish:dry": "npm publish --dry-run",
     "publish:check": "echo '📋 Checking package contents...' && npm pack --dry-run && echo '✅ Use GitHub Actions for actual publishing'",
-    "publish:validate": "bun run build && bun run publish:dry && echo '✅ Package validation complete. Ready for GitHub Actions deployment.'"
+    "publish:validate": "bun run build && bun run publish:dry && echo '✅ Package validation complete. Ready for GitHub Actions deployment.'",
+    "lockfile:generate": "rm -f yarn.lock package-lock.json && bun install",
+    "lockfile:update": "bun update"
   },
   "devDependencies": {
     "@types/bun": "^1.2.20",
@@ -98,5 +100,9 @@
   "engines": {
     "node": ">=18.0.0",
     "bun": ">=1.0.0"
-  }
+  },
+  "trustedDependencies": [
+    "elysia",
+    "@elysiajs/swagger"
+  ]
 }

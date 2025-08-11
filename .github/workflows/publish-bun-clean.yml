@@ -55,25 +55,9 @@ jobs:
           
       - name: 📦 Install dependencies
         run: |
-          echo "📥 Installing dependencies..."
-          
-          # Check which lockfile exists and install accordingly
-          if [ -f "bun.lockb" ]; then
-            echo "Using bun.lockb for installation"
-            bun install --frozen-lockfile
-          elif [ -f "yarn.lock" ]; then
-            echo "Using yarn.lock for installation"
-            # Enable corepack for yarn
-            corepack enable
-            yarn install --frozen-lockfile
-          elif [ -f "package-lock.json" ]; then
-            echo "Using package-lock.json for installation"
-            npm ci
-          else
-            echo "No lockfile found, using bun install"
-            bun install
-          fi
-          
+          echo "📥 Installing dependencies with Bun..."
+          echo "Using lockfile format: $([ -f "bun.lockb" ] && echo "bun.lockb (binary)" || echo "bun.lock (text)")"
+          bun install --frozen-lockfile
           echo "✅ Dependencies installed successfully"
           
       - name: 🧹 Clean previous builds
@@ -183,24 +167,8 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           echo "📥 Installing dependencies..."
-          
-          # Check which lockfile exists and install accordingly
-          if [ -f "bun.lockb" ]; then
-            echo "Using bun.lockb for installation"
-            bun install --frozen-lockfile
-          elif [ -f "yarn.lock" ]; then
-            echo "Using yarn.lock for installation"
-            # Enable corepack for yarn
-            corepack enable
-            yarn install --frozen-lockfile
-          elif [ -f "package-lock.json" ]; then
-            echo "Using package-lock.json for installation"
-            npm ci
-          else
-            echo "No lockfile found, using bun install"
-            bun install
-          fi
-          
+          echo "Using lockfile format: $([ -f "bun.lockb" ] && echo "bun.lockb (binary)" || echo "bun.lock (text)")"
+          bun install --frozen-lockfile
           echo "✅ Dependencies installed"
           
       - name: 🏷️ Update version (if specified)
@@ -316,7 +284,7 @@ jobs:
           echo "   - Check if version already exists on NPM"
           echo "   - Ensure package.json is valid"
           echo "   - Verify build completed successfully"
-          echo "   - Check lockfile is up to date"
+          echo "   - Ensure bun.lock/bun.lockb is up to date"
           
       - name: ⚠️ Already published notification  
         if: needs.validate.outputs.should-publish == 'false'
